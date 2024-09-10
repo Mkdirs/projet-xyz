@@ -23,9 +23,12 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $id = str_pad(strval(fake()->numberBetween(0, 9999)), 4, '0', STR_PAD_LEFT);
+        $name = 'user'.$id;
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'name' => $name,
+            'email' => $name.'@example.com',
+            'avatar' => null,
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
@@ -39,6 +42,12 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    public function withAvatar():static{
+        return $this->state(fn (array $attributes) => [
+            'avatar' => 'https://avatar.iran.liara.run/public/'.(fake()->boolean() ? 'girl' : 'boy').'?name='.$attributes['name'],
         ]);
     }
 }
