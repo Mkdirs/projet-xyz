@@ -23,11 +23,10 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $id = str_pad(strval(fake()->numberBetween(0, 9999)), 4, '0', STR_PAD_LEFT);
-        $name = 'user'.$id;
+        $name = fake()->name();
         return [
             'name' => $name,
-            'email' => $name.'@example.com',
+            'email' => Str::slug($name).'@example.com',
             'avatar' => null,
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
