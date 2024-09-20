@@ -34,6 +34,17 @@ class UserFactory extends Factory
         ];
     }
 
+    public function default() : static {
+        return $this->state(fn (array $attributes) => [
+            'name' => 'Hafez',
+            'email' => 'hafezbenabdillah.madi@gmail.com',
+            'avatar' => null,
+            'email_verified_at' => null,
+            'password' => Hash::make('password'),
+            'remember_token' => Str::random(10)
+        ]);
+    }
+
     /**
      * Indicate that the model's email address should be unverified.
      */
