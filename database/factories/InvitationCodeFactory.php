@@ -19,7 +19,7 @@ class InvitationCodeFactory extends Factory
     public function definition(): array
     {
         return [
-            'code' => Str::upper(fake()->bothify('????-###-????')),
+            'code' => Str::upper(fake()->unique()->bothify('????-###-????')),
             'consumed_at' => null,
             'owner_id' => User::factory(),
             'consumer_id' => null

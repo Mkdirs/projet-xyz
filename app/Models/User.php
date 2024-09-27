@@ -59,4 +59,11 @@ class User extends Authenticatable
             get: fn() => 'user'.$id
         );
     }
+
+    public function generate_codes() {
+        InvitationCode::factory()
+            ->owned_by($this)
+            ->count(5)
+            ->create();
+    }
 }

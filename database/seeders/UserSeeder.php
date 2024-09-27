@@ -24,10 +24,7 @@ class UserSeeder extends Seeder
             ->create();
 
         foreach(User::all() as $user){
-            InvitationCode::factory()
-                ->owned_by($user)
-                ->count(5)
-                ->create();
+            $user->generate_codes();
         }
     }
 }
