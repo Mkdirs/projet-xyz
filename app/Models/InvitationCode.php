@@ -10,7 +10,7 @@ class InvitationCode extends Model
 {
     use HasFactory;
 
-    private $fillable = [
+    protected $fillable = [
         'consumer_id',
         'owner_id',
         'code',

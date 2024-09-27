@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\InvitationCode;
 use App\Models\User;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -21,5 +22,12 @@ class UserSeeder extends Seeder
             ->withAvatar()
             ->count(10)
             ->create();
+
+        foreach(User::all() as $user){
+            InvitationCode::factory()
+                ->owned_by($user)
+                ->count(5)
+                ->create();
+        }
     }
 }

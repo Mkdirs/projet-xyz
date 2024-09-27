@@ -19,17 +19,24 @@ class InvitationCodeFactory extends Factory
     public function definition(): array
     {
         return [
-            'code' => Str::upper(fake()->bothify('????-####-????')),
+            'code' => Str::upper(fake()->bothify('????-###-????')),
             'consumed_at' => null,
             'owner_id' => User::factory(),
             'consumer_id' => null
         ];
     }
 
-    public function consumed(): static
+    public function owned_by(User $user): static
     {
         return $this->state(fn (array $attributes) => [
-            'consumer_id' => User::factory(),
+            'owner_id' => $user
+        ]);
+    }
+
+    public function consumed_by(User $user): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'consumer_id' => $user,
             'consumed_at' => now()
         ]);
     }
