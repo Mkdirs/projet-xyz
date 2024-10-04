@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -35,6 +36,20 @@ class LoginController extends Controller
 
         
         return redirect('/login')->withErrors($validator);
+        
+    }
+
+    function signup(Request $request){
+        $validator = Validator::make($request->all(), [
+            'code' => 'required'
+        ]);
+
+        try {
+            $validated = $validator->validate();
+            return redirect()->route('register', ['invitation_code' => $validated['code']]);
+        } catch (ValidationException $th) {
+            return redirect('/login')->withErrors($validator);
+        }
         
     }
 
