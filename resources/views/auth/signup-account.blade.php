@@ -6,7 +6,7 @@
 
         <section class="block">
 
-            <form action="" method="post" class="block-content signup-form space-y-8">
+            <form action={{ route('create-account', ['invitation_code' => $code]) }} method="post" class="block-content signup-form space-y-8">
                 @csrf
                 
                 <div class="title">
@@ -22,7 +22,7 @@
                     <div class="host">
                         <x-avatar size="medium" :src="null" />
                         <div>
-                            <h1>user0001</h1>
+                            <h1>{{$username}}</h1>
                             <h2>{{ trans_choice('tracks.posts', 13) }}</h2>
                         </div>
                     </div>
@@ -30,18 +30,20 @@
 
                 <div>
                     <label for="email">Adresse email</label>
-                    <input id="email" type="text" placeholder="email" class="w-full" name="email" autocomplete="email" autofocus value="">
+                    <input id="email" type="text" placeholder="email" class="@error('email') is-invalid @enderror w-full" name="email" autocomplete="email" autofocus value="">
                 </div>
 
                 <div>
                     <label for="password">Mot de passe</label>
-                    <input id="password" type="password" name="password" placeholder="•••••••••••••••" class="w-full">
+                    <input id="password" type="password" name="password" placeholder="•••••••••••••••" class="@error('password') is-invalid @enderror w-full">
                 </div>
 
+                
                 <p class="error-message">Exemple de message d'erreur</p>
+                
 
                 <div>
-                    <input type="hidden" name="code" value="ABCD-123-EFGH">
+                    <input type="hidden" id="code" name="code" value={{ $code }}>
                     <button class="primary w-full">Devenir membre</button>
                 </div>
             </form>

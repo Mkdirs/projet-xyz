@@ -6,7 +6,7 @@
 
         <section class="block">
 
-            <form action={{ route('signup-account') }} method="get" class="block-content signup-form space-y-8">
+            <form action={{ route('accept-terms') }} method="post" class="block-content signup-form space-y-8">
                 @csrf
 
                 <div class="title">
@@ -46,13 +46,15 @@
 
                 <div style="display: flex;">
                     <input type="checkbox" name="terms" id="terms" value="true">
-                    <label for="terms">J'ai compris et j'accepte les règles</label>
+                    <label for="terms" class="@error('terms') is-invalid @enderror">J'ai compris et j'accepte les règles</label>
                 </div>
 
-                <p class="error-message">Exemple de message d'erreur</p>
+                @error('terms')
+                <p class="error-message">{{$message}}</p>
+                @enderror
 
                 <div>
-                    <input type="hidden" name="code" value="ABCD-123-EFGH">
+                    <input type="hidden" name="code" id="code" value={{$code}}>
                     <button class="primary w-full">Continuer</button>
                 </div>
             </form>

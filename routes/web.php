@@ -14,5 +14,8 @@ Route::post('/signup', [LoginController::class, 'signup'])->middleware('guest')-
 Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth')->name('logout');
 
 
-Route::get('/register/{invitation_code:code}', [RegisterController::class, 'index'])->middleware('guest')->name('register');
-Route::get('/signup-account', [RegisterController::class, 'accept'])->middleware('guest')->name('signup-account');
+Route::get('/invitation/{invitation_code:code}', [RegisterController::class, 'index'])->middleware('guest')->name('register');
+Route::post('/register', [RegisterController::class, 'accept'])->middleware('guest')->name('accept-terms');
+Route::get('/register/{invitation_code:code}', [RegisterController::class, 'register'])->middleware('guest')->name('signup-account');
+
+Route::post('/register/{invitation_code:code}/create', [RegisterController::class, 'create'])->middleware('guest')->name('create-account');
