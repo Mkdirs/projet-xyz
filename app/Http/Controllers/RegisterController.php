@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\InvitationCode;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 use function Symfony\Component\Clock\now;
@@ -47,21 +48,19 @@ class RegisterController extends Controller
         ]);
 
 
+        $user = User::create([
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'name' => fake()->name()
+        ]);
 
-        $user = new User;
+        $invitation_code->markAsConsumed($user);
 
-        $user->email = 'toto@mail.com';//$validated['email'];
-        $user->password = Hash::make($validated['password']);
-        $user->name = fake()->name();
-        $user->save();
+        $user->generateCodes();
 
-        $invitation_code->consumer_id = $user;
-        $invitation_code->consumed_at = now();
+        Auth::login($user);
 
-        $user->generate_codes();
 
-        
-
-        return redirect('/login');
+        return redirect()->route('home');
     }
 }

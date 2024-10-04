@@ -23,11 +23,20 @@ class InvitationCode extends Model
         return $this->belongsTo(User::class, 'owner_id');
     }
 
+    public function markAsConsumed(User $user) {
+        $this->update([
+            'consumer_id' => $user->id,
+            'consumed_at' => now()
+        ]);
+    }
+
     protected function value(): Attribute{
         return Attribute::make(
             get: fn() => $this->code
         );
     }
+
+
 
     public function consumer(): BelongsTo
     {

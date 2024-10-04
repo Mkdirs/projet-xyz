@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use Database\Factories\InvitationCodeFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -60,10 +61,7 @@ class User extends Authenticatable
         );
     }
 
-    public function generate_codes() {
-        InvitationCode::factory()
-            ->owned_by($this)
-            ->count(5)
-            ->create();
+    public function generateCodes() {
+        InvitationCode::factory()->owned_by($this)->count(5)->create();
     }
 }

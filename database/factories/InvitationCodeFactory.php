@@ -33,11 +33,11 @@ class InvitationCodeFactory extends Factory
         ]);
     }
 
-    public function consumed_by(User $user): static
+    public function withCode(): static
     {
         return $this->state(fn (array $attributes) => [
-            'consumer_id' => $user,
-            'consumed_at' => now()
+            'code' => 'ABCD-123-EFGH'
         ]);
     }
+
 }

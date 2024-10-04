@@ -36,8 +36,8 @@ class UserFactory extends Factory
 
     public function default() : static {
         return $this->state(fn (array $attributes) => [
-            'name' => 'Hafez',
-            'email' => 'hafezbenabdillah.madi@gmail.com',
+            'name' => 'Admin',
+            'email' => 'contact@xyz.com',
             'avatar' => null,
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
