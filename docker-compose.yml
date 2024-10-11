@@ -44,7 +44,7 @@ services:
     image: 'maildev/maildev:latest'
     container_name: xyz-mail
     ports:
-      - '1000:1025'
+      - '1025:1025'
       - '8025:1080'
     networks:
       - xyz

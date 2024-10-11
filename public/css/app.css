@@ -125,6 +125,10 @@ hr {
     color: red;
 }
 
+.success-message {
+    color: green;
+}
+
 .container-wide {
     width: 95%;
     margin: 0 auto;

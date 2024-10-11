@@ -23,41 +23,24 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $name = fake()->name();
         return [
-            'name' => $name,
-            'email' => Str::slug($name).'@example.com',
-            'avatar' => null,
-            'email_verified_at' => now(),
+            'email' => fake()->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
     }
 
-    public function default() : static {
-        return $this->state(fn (array $attributes) => [
-            'name' => 'Admin',
-            'email' => 'contact@xyz.com',
-            'avatar' => null,
-            'email_verified_at' => now(),
-            'password' => Hash::make('password'),
-            'remember_token' => Str::random(10)
-        ]);
-    }
-
     /**
-     * Indicate that the model's email address should be unverified.
+     * Creates and admin user
+     * @return Factory
      */
-    public function unverified(): static
+    public function admin(): Factory
     {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
-    }
-
-    public function withAvatar():static{
-        return $this->state(fn (array $attributes) => [
-            'avatar' => 'https://avatar.iran.liara.run/public/'.(fake()->boolean() ? 'girl' : 'boy').'?name='.$attributes['name'],
-        ]);
+        return $this->state(function (array $attributes) {
+            return [
+                'email' => 'admin@xyz.com',
+                'password' => Hash::make('admin'),
+            ];
+        });
     }
 }

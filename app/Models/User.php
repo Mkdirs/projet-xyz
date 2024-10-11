@@ -4,10 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use Database\Factories\InvitationCodeFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -15,20 +13,14 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    public function invitations() : HasMany {
-        return $this->hasMany(InvitationCode::class, 'owner_id');
-    }
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
-        'password',
-        'avatar'
+        'password'
     ];
 
     /**
@@ -49,19 +41,25 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
 
-    protected function username(): Attribute{
-        $id = str_pad(strval($this->id), 4, '0', STR_PAD_LEFT);
+    /**
+     * Get the username.
+     */
+    protected function username(): Attribute
+    {
         return Attribute::make(
-            get: fn() => 'user'.$id
+            get: fn () => "user" . str_pad((string) $this->id, 4, "0", STR_PAD_LEFT),
         );
     }
 
-    public function generateCodes() {
-        InvitationCode::factory()->owned_by($this)->count(5)->create();
+    /**
+     * Get the user codes.
+     */
+    public function codes()
+    {
+        return $this->hasMany(Code::class, 'host_id');
     }
 }

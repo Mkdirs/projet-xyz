@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Week;
 
 class HomeController extends Controller
 {
-    function index(){
-        return view('app.home');
+    /**
+     * Show app homepage.
+     */
+    public function __invoke()
+    {
+        return view('app.home', [
+            'week' => Week::current(),
+            'tracks' => [],
+            'weeks' => Week::last(5)->latest('week_starts_at')->get(),
+        ]);
     }
 }

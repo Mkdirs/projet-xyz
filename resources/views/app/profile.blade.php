@@ -3,36 +3,50 @@
     <main class="container-wide two-cols space-y-8">
         <section>
             <h1>
-                Profil <small>user0001</small>
+                Profil <small>{{ $user->username }}</small>
             </h1>
 
-            <form method="post" enctype="multipart/form-data" action="" class="profile-form space-y-4">
+            <form method="post" enctype="multipart/form-data" action="{{ route('profile.update') }}" class="profile-form space-y-4">
                 <div>
                     <label for="file">Avatar</label>
                     <div class="avatar-input">
-                        <x-avatar size="large" :src="null" />
+                        <x-avatar size="large" :src="$user->avatar" />
                         <div>
                             <input id="file" type="file" name="avatar">
                         </div>
                     </div>
                 </div>
 
+                @error('avatar')
+                <p class="error-message">{{ $message }}</p>
+                @enderror
+
                 <div>
                     <label for="email">Adresse email</label>
-                    <input id="email" class="w-large" type="email" name="email" value="" placeholder="email" autocomplete="email">
+                    <input id="email" class="w-large" type="email" name="email" value="{{ $user->email }}" placeholder="email" autocomplete="email">
                 </div>
+
+                @error('email')
+                <p class="error-message">{{ $message }}</p>
+                @enderror
 
                 <div>
                     <label for="password">Mot de passe</label>
                     <input id="password" class="w-medium" type="password" name="password" placeholder="•••••••••••••••">
                 </div>
 
-                <p class="error-message">Exemple de message d'erreur</p>
+                @error('password')
+                <p class="error-message">{{ $message }}</p>
+                @enderror
         
                 <div>
                     @csrf
                     <button class="primary">Mettre à jour</button>
                 </div>
+
+                @session('success')
+                <p class="success-message">{{ $value }}</p>
+                @endsession
             </form>
         </section>
 
@@ -45,17 +59,16 @@
                     </svg>
                     <div>
                         <h1>Codes d'inscription</h1>
-                        <h2>{{ trans_choice('auth.remaining_codes', 2) }}</h2>
+                        <h2>{{ trans_choice('auth.remaining_codes', $user->remaining_codes_count) }}</h2>
                     </div>
                 </div>
 
                 <div class="space-y-2">
-                    <input class="signup-code" type="text" readonly disabled value="ABCD-123-EFGH">
-                    <input class="signup-code" type="text" readonly disabled value="ABCD-123-EFGH">
-                    <input class="signup-code" type="text" readonly value="ABCD-123-EFGH">
-                    <input class="signup-code" type="text" readonly value="ABCD-123-EFGH">
-                    <input class="signup-code" type="text" readonly value="ABCD-123-EFGH">
+                    @foreach ($codes as $code)
+                    <input class="signup-code" type="text" readonly {{ $code->isConsumed() ? 'disabled' : '' }} value="{{ $code->code }}">
+                    @endforeach
                 </div>
+
             </div>
         </div>
     </main>

@@ -15,6 +15,17 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+        /*
+    |--------------------------------------------------------------------------
+    | Application Business Rules
+    |--------------------------------------------------------------------------
+    |
+    | There values are related to app behaviour according to business needs.
+    |
+    */
+
+    'codes_count' => env('APP_CODES_COUNT', 5),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

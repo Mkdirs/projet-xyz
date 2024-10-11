@@ -6,9 +6,7 @@
 
         <section class="block">
 
-            <form action={{ route('accept-terms') }} method="post" class="block-content signup-form space-y-8">
-                @csrf
-
+            <form action="{{ route('account') }}" method="get" class="block-content signup-form space-y-8">
                 <div class="title">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z" clip-rule="evenodd" />
@@ -20,9 +18,9 @@
                 <div>
                     <label for="email">Invité par</label>
                     <div class="host">
-                        <x-avatar size="medium" :src="null" />
+                        <x-avatar size="medium" :src="$user->avatar" />
                         <div>
-                            <h1>{{$username}}</h1>
+                            <h1>{{ $user->username }}</h1>
                             <h2>{{ trans_choice('tracks.posts', 13) }}</h2>
                         </div>
                     </div>
@@ -46,15 +44,15 @@
 
                 <div style="display: flex;">
                     <input type="checkbox" name="terms" id="terms" value="true">
-                    <label for="terms" class="@error('terms') is-invalid @enderror">J'ai compris et j'accepte les règles</label>
+                    <label for="terms">J'ai compris et j'accepte les règles</label>
                 </div>
 
                 @error('terms')
-                <p class="error-message">{{$message}}</p>
+                <p class="error-message">{{ $message }}</p>
                 @enderror
 
                 <div>
-                    <input type="hidden" name="code" id="code" value={{$code}}>
+                    <input type="hidden" name="code" value="{{ $code }}">
                     <button class="primary w-full">Continuer</button>
                 </div>
             </form>

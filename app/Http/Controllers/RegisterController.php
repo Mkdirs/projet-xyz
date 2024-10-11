@@ -2,64 +2,98 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\InvitationCode;
+use App\Models\Code;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Mail\WelcomeMessage;
+use App\Services\CodeService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-
-use function Symfony\Component\Clock\now;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rule;
+use Illuminate\Http\Request;
+use App\Exceptions\RegistrationFailedException;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class RegisterController extends Controller
 {
-    function index(InvitationCode $invitation_code) {
+    /**
+     * Terms form.
+     */
+    public function terms(Request $request): View
+    {
+        $request->validate([
+            'code' => [Rule::exists('codes', 'code')->whereNull('consumed_at')]
+        ]);
 
-        $username = $invitation_code->owner()->first()->name;
+        $code = Code::with('host')->where('code', $request->code)->first();
 
-        return view('auth.signup-terms')->with([
-            'username' => $username,
-            'code' => $invitation_code->code
+        return view('auth.signup-terms', [
+            'user' => $code->host,
+            'code' => $request->code,
         ]);
     }
 
-    function accept(Request $request){
-        $validated = $request->validate([
-            'terms' => 'required',
-            'code' => 'required'
+    /**
+     * Account form.
+     */
+    public function account(Request $request): View
+    {
+        $request->validate([
+            'terms' => 'accepted',
+            'code' => [Rule::exists('codes', 'code')->whereNull('consumed_at')]
         ]);
 
-        return redirect()->route('signup-account', ['invitation_code' => $validated['code']]);;
+        $code = Code::with('host')->where('code', $request->code)->first();
+
+        return view('auth.signup-account', [
+            'user' => $code->host,
+            'code' => $request->code,
+        ]);
     }
 
-    function register(Request $request, InvitationCode $invitation_code){
-        $username = $invitation_code->owner()->first()->name;
-
-        return view('auth.signup-account')->with([
-            'username' => $username,
-            'code' => $invitation_code->code
-        ]);
-    }
-
-    function create(Request $request, InvitationCode $invitation_code){
-
-        $validated = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
+    /**
+     * Handle account form.
+     *
+     * @throws RegistrationFailedException
+     */
+    public function register(Request $request, CodeService $service): RedirectResponse
+    {
+        $request->validate([
+            'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')],
+            'password' => ['required', 'min:4', 'max:255'],
+            'code' => [Rule::exists('codes', 'code')->whereNull('consumed_at')]
         ]);
 
+        DB::beginTransaction();
 
-        $user = User::create([
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'name' => fake()->name()
-        ]);
+        try {
+            // Create user
+            $user = new User($request->only(['email', 'password']));
+            $user->save();
 
-        $invitation_code->markAsConsumed($user);
+            // Make code as consumed
+            $service->markAsConsumed($request->string('code'), $user);
 
-        $user->generateCodes();
+            // Generate user codes
+            $codes = $service->generate(config('app.codes_count'));
+            $user->codes()->saveMany($codes);
 
-        Auth::login($user);
+            // Send welcome e-mail
+            Mail::to($user)->send(new WelcomeMessage($user->codes));
 
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+
+            // Rendering of this custom exception is defined within the exception itself
+            throw new RegistrationFailedException(previous: $th);
+        }
+
+        Auth::loginUsingId($user->id);
+
+        // Generate a new session identifier
+        $request->session()->regenerate();
 
         return redirect()->route('home');
     }
