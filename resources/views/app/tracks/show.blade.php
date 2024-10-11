@@ -12,7 +12,7 @@
                 <dd>{{ $track->artist }}</dd>
 
                 <dt>Titre</dt>
-                <dd>Nom du titre</dd>
+                <dd>{{ $track->title }}</dd>
 
                 <dt>Contributeur</dt>
                 <dd class="flex-center">
@@ -45,7 +45,7 @@
                 <div class="space-y-2">
                     <dl>
                         <dt>Semaine</dt>
-                        <dd>2024-S37</dd>
+                        <dd>{{ $week->name }}</dd>
                     </dl>
 
                     <dl>

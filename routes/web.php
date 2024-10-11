@@ -29,7 +29,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/weeks/{week:uri}', [WeekController::class, 'show'])->name('weeks.show')->where('week', '[0-9]{4}/[0-9]{2}');
 
     // Tracks
-    Route::get('/track/{track}', [TrackController::class, 'index'])->name('track.show');
+    Route::get('/track/{week:uri}/{track}', [TrackController::class, 'index'])->name('track.show');
 
     // ...
 
