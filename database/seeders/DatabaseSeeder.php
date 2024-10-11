@@ -18,6 +18,11 @@ class DatabaseSeeder extends Seeder
         $this->call(WeekSeeder::class);
 
         // Create users
+        User::factory(1)
+            ->admin()
+            ->has(Code::factory()->count(5))
+            ->create();
+
         User::factory(10)
             ->has(Code::factory()->consumed()->count(2))
             ->has(Code::factory()->count(3))

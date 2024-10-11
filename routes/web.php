@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TrackController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
@@ -26,6 +27,9 @@ Route::group(['middleware' => ['auth']], function () {
     // Week ranking
     Route::get('/weeks', [WeekController::class, 'index'])->name('weeks.index'); // Redirect to current week
     Route::get('/weeks/{week:uri}', [WeekController::class, 'show'])->name('weeks.show')->where('week', '[0-9]{4}/[0-9]{2}');
+
+    // Tracks
+    Route::get('/track/{track}', [TrackController::class, 'index'])->name('track.show');
 
     // ...
 

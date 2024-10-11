@@ -78,7 +78,7 @@ class Week extends Model
      */
     public function scopeLast(Builder $query, int $previousWeeksCount): Builder
     {
-        return $query->whereIn('week_starts_at', 
+        return $query->whereIn('week_starts_at',
             app(WeekService::class)->previous($previousWeeksCount)->map->start()
         );
     }
@@ -101,5 +101,13 @@ class Week extends Model
         }
 
         return $this->findOrFail($value);
+    }
+
+    /**
+     * Get the week tracks.
+     */
+    public function tracks()
+    {
+        return $this->hasMany(Track::class, 'week_id');
     }
 }

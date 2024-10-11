@@ -9,7 +9,7 @@
 
             <dl>
                 <dt>Artiste</dt>
-                <dd>Nom de l'artiste</dd>
+                <dd>{{ $track->artist }}</dd>
 
                 <dt>Titre</dt>
                 <dd>Nom du titre</dd>
@@ -21,9 +21,9 @@
 
                 <dt>Lecteur</dt>
                 <dd>
-                    <iframe width="560" height="315" 
+                    <iframe width="560" height="315"
                         src="https://www.youtube-nocookie.com/embed/hYfz5adLxJc"
-                        title="YouTube video player" frameborder="0" 
+                        title="YouTube video player" frameborder="0"
                         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share">
                     </iframe>

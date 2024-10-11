@@ -29,4 +29,18 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
         ];
     }
+
+    /**
+     * Creates and admin user
+     * @return Factory
+     */
+    public function admin(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'email' => 'admin@xyz.com',
+                'password' => Hash::make('admin'),
+            ];
+        });
+    }
 }

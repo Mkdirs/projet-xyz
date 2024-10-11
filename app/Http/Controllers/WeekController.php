@@ -23,7 +23,7 @@ class WeekController extends Controller
     {
         return view('app.weeks.show', [
             'week' => $week,
-            'tracks' => [],
+            'tracks' => $week->tracks()->getResults(),
             'isCurrent' => $week->toPeriod()->contains(now()),
         ]);
     }
