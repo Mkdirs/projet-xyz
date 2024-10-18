@@ -4,7 +4,7 @@
 
         <section>
             <h1>
-                Contribution <small>n°2</small>
+                Contribution <small>n°{{$position}}</small>
             </h1>
 
             <dl>
@@ -22,7 +22,7 @@
                 <dt>Lecteur</dt>
                 <dd>
                     <iframe width="560" height="315"
-                        src="{{$track->play_url}}"
+                        src="{{$player->embed($track->play_url)}}"
                         title="YouTube video player" frameborder="0"
                         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share">

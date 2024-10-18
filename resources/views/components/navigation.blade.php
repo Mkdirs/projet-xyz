@@ -13,7 +13,7 @@
             @endif
         </li>
         <li @class(['current' => false])>
-            <a href="#">+ Contribuer</a>
+            <a href="{{route('track.contribute')}}">+ Contribuer</a>
         </li>
         @endauth
     </ul>

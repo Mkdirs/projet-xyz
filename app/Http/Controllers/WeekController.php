@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Week;
+use App\Models\YoutubePlayer;
 
 class WeekController extends Controller
 {
@@ -21,11 +22,13 @@ class WeekController extends Controller
      */
     public function show(Week $week)
     {
-        //dd($week->tracks);
+        $player = new YoutubePlayer();
+
         return view('app.weeks.show', [
             'week' => $week,
             'tracks' => $week->tracks,
             'isCurrent' => $week->toPeriod()->contains(now()),
+            'player' => $player,
         ]);
     }
 }

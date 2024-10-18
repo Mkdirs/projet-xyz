@@ -9,9 +9,9 @@
             <ol class="chart">
                 @foreach($tracks as $track)
                 <li>
-                    <a href="{{ route('track.show', ['week' => $week->uri, 'track' => $track]) }}">
+                    <a href="{{ route('track.show', ['track' => $track, 'position' => $loop->iteration]) }}">
                         <span class="position">{{ $loop->iteration }}.</span>
-                        <img src="" alt="">
+                        <img src="{{$player->thumbnail($track->play_url)}}" alt="">
                         <div class="details">
                             <h1 class="truncate">{{ $track->artist }}</h1>
                             <h2 class="truncate">{{ $track->title }}</h2>

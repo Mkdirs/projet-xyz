@@ -4,16 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\Track;
 use App\Models\Week;
+use App\Models\YoutubePlayer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TrackController extends Controller
 {
-    public function index(Request $request, Week $week, Track $track){
+    public function index(Request $request, Track $track){
+
+        $week = $track->week;
+
+        $player = new YoutubePlayer();
+        $position = $request->query('position');
 
         return view('app.tracks.show', [
             'track' => $track,
             'week' => $week,
+            'player' => $player,
+            'position' => $position
         ]);
     }
 
