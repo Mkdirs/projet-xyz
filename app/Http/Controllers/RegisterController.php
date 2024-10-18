@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Code;
+use App\Models\InvitationCode;
 use App\Models\User;
 use App\Mail\WelcomeMessage;
 use App\Services\CodeService;
@@ -26,7 +27,7 @@ class RegisterController extends Controller
             'code' => [Rule::exists('codes', 'code')->whereNull('consumed_at')]
         ]);
 
-        $code = Code::with('host')->where('code', $request->code)->first();
+        $code = InvitationCode::with('host')->where('code', $request->code)->first();
 
         return view('auth.signup-terms', [
             'user' => $code->host,
@@ -44,7 +45,7 @@ class RegisterController extends Controller
             'code' => [Rule::exists('codes', 'code')->whereNull('consumed_at')]
         ]);
 
-        $code = Code::with('host')->where('code', $request->code)->first();
+        $code = InvitationCode::with('host')->where('code', $request->code)->first();
 
         return view('auth.signup-account', [
             'user' => $code->host,

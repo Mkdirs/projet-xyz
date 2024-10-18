@@ -13,7 +13,9 @@ class Track extends Model
     protected $fillable = [
         'title',
         'play_url',
-        'artist'
+        'artist',
+        'contributer_id',
+        'week_id'
     ];
 
     /**

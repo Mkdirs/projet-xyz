@@ -21,9 +21,10 @@ class WeekController extends Controller
      */
     public function show(Week $week)
     {
+        //dd($week->tracks);
         return view('app.weeks.show', [
             'week' => $week,
-            'tracks' => $week->tracks()->getResults(),
+            'tracks' => $week->tracks,
             'isCurrent' => $week->toPeriod()->contains(now()),
         ]);
     }

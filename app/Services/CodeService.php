@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Code;
+use App\Models\InvitationCode;
 use App\Models\User;
 use Illuminate\Support\Str;
 
@@ -25,8 +26,8 @@ class CodeService
     {
         $codes = [];
 
-        for ($i=1; $i <= $count; $i++) { 
-            $codes[] = new Code(['code' => $this->random()]);
+        for ($i=1; $i <= $count; $i++) {
+            $codes[] = new InvitationCode(['code' => $this->random()]);
         }
 
         return $codes;
@@ -37,9 +38,9 @@ class CodeService
      */
     public function markAsConsumed(string $code, User $consumedBy): void
     {
-        Code::whereCode($code)->update([
+        InvitationCode::whereCode($code)->update([
             'consumed_at' => now(),
-            'guest_id' => $consumedBy->id
+            'consumer_id' => $consumedBy->id
         ]);
     }
 }

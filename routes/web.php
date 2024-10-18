@@ -29,8 +29,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/weeks/{week:uri}', [WeekController::class, 'show'])->name('weeks.show')->where('week', '[0-9]{4}/[0-9]{2}');
 
     // Tracks
-    Route::get('/track/{week:uri}/{track}', [TrackController::class, 'index'])->name('track.show');
-
+    Route::get('/track/{week:uri}/{track}', [TrackController::class, 'index'])->name('track.show')->where('week', '[0-9]{4}/[0-9]{2}');;
+    Route::get('/contribute', [TrackController::class, 'contribute'])->name('track.contribute');
+    Route::get('/contribute/{week:uri}', [TrackController::class, 'show'])->name('track.contribute.show')->where('week', '[0-9]{4}/[0-9]{2}');
+    Route::post('/contribute/{week:uri}', [TrackController::class, 'create'])->name('track.contribute.create')->where('week', '[0-9]{4}/[0-9]{2}');
     // ...
 
     // Profile

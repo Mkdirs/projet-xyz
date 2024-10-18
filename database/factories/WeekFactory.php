@@ -40,6 +40,15 @@ class WeekFactory extends Factory
             'week_number' => $week->get('week'),
             'week_starts_at' => $week->startOfWeek(),
             'week_ends_at' => $week->endOfWeek(),
-        ]); 
+        ]);
+    }
+
+    public function randYear()
+    {
+        $year = now()->set(Unit::Year, rand(200, 2050))->year;
+
+        return $this->state(fn ($attributes) => [
+            'year' => $year
+        ]);
     }
 }

@@ -19,7 +19,6 @@ return new class extends Migration
             $table->dateTime('week_ends_at');
 
             $table->index('week_starts_at');
-            $table->unique(['year', 'week_number']);
         });
     }
 

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('artist');
-            $table->string('play_url');
+            $table->string('play_url')->nullable();
             $table->foreignIdFor(\App\Models\User::class, 'contributer_id')->constrained('users');
             $table->foreignIdFor(\App\Models\Week::class, 'week_id')->constrained('weeks');
             $table->timestamps();

@@ -60,6 +60,14 @@ class User extends Authenticatable
      */
     public function codes()
     {
-        return $this->hasMany(Code::class, 'host_id');
+        return $this->hasMany(InvitationCode::class, 'owner_id');
+    }
+
+    /**
+     * Get the user's tracks.
+     */
+    public function tracks()
+    {
+        return $this->hasMany(Track::class, 'contributer_id');
     }
 }

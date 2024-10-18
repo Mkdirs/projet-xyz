@@ -16,13 +16,13 @@
 
                 <dt>Contributeur</dt>
                 <dd class="flex-center">
-                    <x-avatar size="medium" :src="null" /> user0001
+                    <x-avatar size="medium" :src="null" /> {{$track->contributer->username}}
                 </dd>
 
                 <dt>Lecteur</dt>
                 <dd>
                     <iframe width="560" height="315"
-                        src="https://www.youtube-nocookie.com/embed/hYfz5adLxJc"
+                        src="{{$track->play_url}}"
                         title="YouTube video player" frameborder="0"
                         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share">
